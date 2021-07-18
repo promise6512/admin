@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
 import { Form, Input, Button } from 'antd';
-import { UserOutlined,LockOutlined } from '@ant-design/icons';
+import { UserOutlined,LockOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import './login.less'
 import logo from './images/logo.png'
 export default class Login extends Component {
+    onFinish = (values) =>{
+        console.log(values)
+    }
+    onFinishFailed = (errorInfo) => {
+        console.log('failed',errorInfo)
+    }
     render() {
         return (
             <div className='login'>
@@ -20,15 +26,19 @@ export default class Login extends Component {
                                 span: 100,
                             }}
                             className='login-form'
+                            onFinish={this.onFinish}
+                            onFinishFailed={this.onFinishFailed}
                         >
                             <Form.Item
                                /*  label="Username" */
                                 name="username"
                                 rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your username!',
-                                    },
+                                    {whitespace:true,message:'Please input your username!'},
+                                    { required: true,message: 'Please input your username!',},
+                                    { min: 4,message: '用户名至少4位' },
+                                    { max: 12,message: '用户名最多12位'},
+                                    { max: 12,message: '用户名最多12位'},
+                                    { pattern: /^[a-zA-Z0-9_]+$/,message: '用户名必须由字母数字下划线组成'}
                                 ]}
                             >
                                 <Input placeholder='用户名' prefix={<UserOutlined style={{color:'rgba(0,0,0,.25)'}}/>}/>
@@ -49,7 +59,7 @@ export default class Login extends Component {
 
                             <Form.Item >
                                 <Button type="primary" htmlType="submit" className='login-form-button'>
-                                    Submit
+                                    登录
                                 </Button>
                             </Form.Item>
                         </Form>
