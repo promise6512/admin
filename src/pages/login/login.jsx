@@ -1,16 +1,39 @@
 import React, { Component } from 'react'
-import { Form, Input, Button } from 'antd';
-import { UserOutlined,LockOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { Redirect } from 'react-router-dom';
+import { Form, Input, Button,message } from 'antd';
+import { UserOutlined,LockOutlined} from '@ant-design/icons';
 import './login.less'
 import logo from './images/logo.png'
+import { reqLogin } from '../../api';
+import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
 export default class Login extends Component {
-    onFinish = (values) =>{
-        console.log(values)
+    onFinish = async (values) =>{
+        const {username,password} = values;
+        //使用await可以省略使用then()来指定成功/失败的回调函数
+        //直接将成功的值返回给response
+        const response = await reqLogin(username,password)
+        console.log(response)  
+        
+        if(response.status===0){
+            message.success('登陆成功')
+            memoryUtils.user = response.data
+            storageUtils.saveUser(response.data)
+            //console.log(storageUtils.getUser())
+            //不需要回退
+            this.props.history.push('/')
+        }else{
+            message.error(response.msg)
+        }
     }
     onFinishFailed = (errorInfo) => {
         console.log('failed',errorInfo)
     }
     render() {
+        const {user} = memoryUtils;
+        if(user._id&&user.username){
+            return <Redirect to='/'/>
+        }
         return (
             <div className='login'>
                 <header className='login-header'>
@@ -37,9 +60,9 @@ export default class Login extends Component {
                                     { required: true,message: 'Please input your username!',},
                                     { min: 4,message: '用户名至少4位' },
                                     { max: 12,message: '用户名最多12位'},
-                                    { max: 12,message: '用户名最多12位'},
                                     { pattern: /^[a-zA-Z0-9_]+$/,message: '用户名必须由字母数字下划线组成'}
                                 ]}
+                                initialValue='admin'
                             >
                                 <Input placeholder='用户名' prefix={<UserOutlined style={{color:'rgba(0,0,0,.25)'}}/>}/>
                             </Form.Item>
@@ -47,11 +70,18 @@ export default class Login extends Component {
                             <Form.Item
                                /*  label="Password" */
                                 name="password"
-                                rules={[
+                                /* rules={[
                                     {
                                         required: true,
                                         message: 'Please input your password!',
                                     },
+                                ]} */
+                                rules={[
+                                    {whitespace:true,message:'Please input your password!'},
+                                    { required: true,message: 'Please input your password!',},
+                                    { min: 4,message: '密码至少4位' },
+                                    { max: 12,message: '密码最多12位'},
+                                    { pattern: /^[a-zA-Z0-9_]+$/,message: '用户名必须由字母数字下划线组成'}
                                 ]}
                             >
                                 <Input.Password placeholder='密码' prefix={<LockOutlined style={{color:'rgba(0,0,0,.25)'}}/>}/>
