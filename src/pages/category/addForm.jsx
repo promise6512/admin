@@ -1,17 +1,35 @@
 import React, { Component } from 'react'
 import { Form, Select,Input } from 'antd'
 export default class AddForm extends Component {
+    componentDidMount(){
+        //console.log(this.form.getFieldValue('parentId'))
+        //console.log(this.form.getFieldValue('categoryName'))
+        this.props.setForm(this.form)
+    }
     render() {
+        const {categorys,parentId} = this.props;
+        if(this.form){
+            this.form.setFieldsValue({
+                parentId
+            })
+        }
         return (
-            <Form>
-                <h2>一级分类：</h2>
-                <Form.Item >
+            <Form ref={c=>this.form = c}>
+                <Form.Item initialValue={parentId} name='parentId'>
                     <Select>
                         <Select.Option value='0'>一级分类</Select.Option>
+                        {
+                            categorys.map(element=>(
+                                <Select.Option value={element._id} key={element._id}>{element.name}</Select.Option>
+                            ))
+                        }
                     </Select>
                 </Form.Item>
-                <h2>所属分类：</h2>
-                <Form.Item initialValue=''>
+                <Form.Item initialValue='' name='categoryName'
+                    rules={[
+                        {required:true,whitespace:true,message:'名称不能为空'}
+                    ]}
+                >
                     <Input placeholder='请输入分类名称'/>
                 </Form.Item>
             </Form>
