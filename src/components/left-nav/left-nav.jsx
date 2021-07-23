@@ -50,8 +50,10 @@ class LeftNav extends Component {
                         </Menu.Item>
                     ))
                 }else{
-                    const curChild = cur.children.find(element=>element.key===path)
-                    if (curChild){this.openkey=cur.key}
+                    const curChild = cur.children.find(element=>path.indexOf(element.key)===0)
+                    if (curChild){
+                        this.openkey=cur.key
+                    }
                     acc.push((
                         <SubMenu key={cur.key} icon={<MailOutlined />} title={cur.title}>
                             {
@@ -73,8 +75,10 @@ class LeftNav extends Component {
     render() {
         //得到当前请求的路由路径
         //console.log(this.props)
-        const path =  this.props.location.pathname
-       // console.log('##',path)
+        let path =  this.props.location.pathname
+        if(path.indexOf('/product') === 0){
+            path = '/product'
+        }
         return (
             <div  className='left-nav'>
                 <Link className='left-nav-header' to='/'>
@@ -86,6 +90,7 @@ class LeftNav extends Component {
                     <Menu
                         mode="inline"
                         theme="dark"
+                        //选中的key
                         selectedKeys={[path]}
                         /* 默认属性只会指定一次 在手动刷新页面时会重新指定默认属性 */
                         defaultOpenKeys={[this.openkey]}

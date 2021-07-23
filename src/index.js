@@ -9,4 +9,3 @@ memoryUntils.user = storageUtils.getUser()
 console.log('index')
 ReactDOM.render(<App />,document.getElementById('root'));
 
-

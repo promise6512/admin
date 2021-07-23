@@ -36,13 +36,19 @@ class Header extends Component {
         let title;
         menuList.forEach(parent=>{
             if(!parent.children){
-                if(parent.key === pathname){
+                /* if(parent.key === pathname){
+                    title = parent.title
+                   //console.log(title)
+                    return
+                } */
+                if(pathname.indexOf(parent.key) === 0){
                     title = parent.title
                    //console.log(title)
                     return
                 }
             }else{
-               const result = parent.children.find(children => pathname === children.key)
+               //const result = parent.children.find(children => pathname === children.key)
+               const result = parent.children.find(children => pathname.indexOf(children.key) === 0)
                if(result){
                    title = result.title;
                    return;

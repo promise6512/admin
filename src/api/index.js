@@ -24,6 +24,10 @@ export const reqSearchProducts = (pageNum,pageSize,searchName,searchType) => aja
   pageSize,
   [searchType]:searchName
 })
+//获取一个分类
+export const reqDetailCategory = (categoryId) => ajax(BASE+'/manage/category/info',{categoryId})
+//获取商品上架/下架状态
+export const reqChangeProductStatus = (productId,status) => ajax(BASE+'/manage/product/updateStatus',{productId,status},'POST')
 /* 
   jsonp请求的接口请求函数
 */
