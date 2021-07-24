@@ -32,7 +32,6 @@ export default class ProductDetail extends Component {
     }
     //点击"返回" 路由组件卸载
    /*  componentWillUnmount(){
-        console.log('WillUnmount')
     } */
     render() {
         const {product} = this.props.location.state;

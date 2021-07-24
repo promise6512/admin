@@ -28,6 +28,15 @@ export const reqSearchProducts = (pageNum,pageSize,searchName,searchType) => aja
 export const reqDetailCategory = (categoryId) => ajax(BASE+'/manage/category/info',{categoryId})
 //获取商品上架/下架状态
 export const reqChangeProductStatus = (productId,status) => ajax(BASE+'/manage/product/updateStatus',{productId,status},'POST')
+//删除图片
+export const reqDeleteImg = (name) => ajax(BASE+'/manage/img/delete',{name},'POST')
+//添加商品
+export const reqAddProduct = (pCategoryId,categoryId,name,desc,price,detail,imgs) => ajax('/manage/product/add',
+{pCategoryId,categoryId,name,desc,price,detail,imgs},'POST')
+//更新商品
+export const reqUpdateProduct = (_id,pCategoryId,categoryId,name,desc,price,detail,imgs) => ajax('/manage/product/update',
+{_id,pCategoryId,categoryId,name,desc,price,detail,imgs},'POST')
+
 /* 
   jsonp请求的接口请求函数
 */

@@ -26,3 +26,10 @@
 2). 基于后台的分页
     请求获取数据，每次获取当前页的数据，翻页时要发请求
     
+### 父子组件调用方法
+1). 子组件调用父组件方法:将父组件方法以函数属性的形式传递给子组件 子组件就可以调用了
+2). 父组件调用子组件方法:在父组件中通过ref得到子组件标签对象(即组件对象) 调用其方法
+    步骤:
+        创建ref容器，this.PictureWall = React.creatRef()
+        将需要取的标签元素/组件对象存到ref容器中 <PictureWall ref={this.PictureWall}/>
+        通过ref的current属性读取标签元素/组件对象 this.PictureWall.current 并调用其中的方法

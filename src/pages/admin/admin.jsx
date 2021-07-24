@@ -23,7 +23,8 @@ export default class Admin extends Component {
             )
         }
         return (
-            <Layout style={{ height: '100%' }}>
+            //指定minHeight后就 当子元素高度比自身大时 就会被撑开
+            <Layout style={{ minHeight: '100%' }}>
                 <Sider>
                     <LeftNav />
                 </Sider>
