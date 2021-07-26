@@ -8,8 +8,6 @@ import { message } from 'antd';
 const BASE = '';
 //登录
 export const reqLogin = (username,password) => ajax(BASE+'/login',{username,password},'POST')
-//添加用户
-export const reqAddUser = (user) => ajax('/manage/user/add',user,'POST')
 //获取分类列表
 export const reqCategorys = (parentId) => ajax(BASE+'/manage/category/list',{parentId})
 //添加分类
@@ -36,7 +34,20 @@ export const reqAddProduct = (pCategoryId,categoryId,name,desc,price,detail,imgs
 //更新商品
 export const reqUpdateProduct = (_id,pCategoryId,categoryId,name,desc,price,detail,imgs) => ajax('/manage/product/update',
 {_id,pCategoryId,categoryId,name,desc,price,detail,imgs},'POST')
-
+//获取角色列表
+export const reqGetRoles = () => ajax('/manage/role/list')
+//添加角色
+export const reqAddRole = (roleName) => ajax('/manage/role/add',{roleName},'POST')
+//更新角色                    //传入的role为对象
+export const reqUpdateRole = (role) => ajax('/manage/role/update',role,'POST')
+//请求用户
+export const reqGetUsers = () => ajax('/manage/user/list')
+//删除用户
+export const reqDeleteUser = (userId) => ajax('/manage/user/delete',{userId},'POST')
+//添加用户
+export const reqAddUser = (user) => ajax('/manage/user/add',user,'POST')
+//修改用户
+export const reqUpdateUser = (user) => ajax('/manage/user/update',user,'POST')
 /* 
   jsonp请求的接口请求函数
 */
