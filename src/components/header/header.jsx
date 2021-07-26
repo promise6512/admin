@@ -66,10 +66,9 @@ class Header extends Component {
           okText: '确认',
           cancelText: '取消',
           onOk:()=>{
-              console.log('ok')
-              this.props.history.replace('/login')
               storageUtils.removeUser()
               memoryUtils.user = {}
+              this.props.history.replace('/login')
           }
         });
       }
@@ -90,7 +89,7 @@ class Header extends Component {
         return (
             <div className='header'>
                 <div className="header-top">
-                    <span>欢迎,admin</span>
+                    <span>欢迎,{ memoryUtils.user.username}</span>
                     <LinkButton onClick={this.confirm}>退出</LinkButton>
                 </div>
                 <div className="header-bottom">

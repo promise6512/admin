@@ -18,6 +18,7 @@ export default class Login extends Component {
         if(response.status===0){
             message.success('登陆成功')
             memoryUtils.user = response.data
+           // console.log(memoryUtils.user)
             storageUtils.saveUser(response.data)
             //console.log(storageUtils.getUser())
             //不需要回退
@@ -31,7 +32,7 @@ export default class Login extends Component {
     }
     render() {
         const {user} = memoryUtils;
-        if(user._id&&user.username){
+        if(user&&user._id){
             return <Redirect to='/'/>
         }
         return (

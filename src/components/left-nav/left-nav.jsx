@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link,withRouter } from 'react-router-dom'
-
 import { Menu } from 'antd';
+import memoryUtils from '../../utils/memoryUtils';
 import {
     PieChartOutlined,
     MailOutlined,
@@ -35,7 +35,21 @@ class LeftNav extends Component {
             })
         )
     }
-
+    
+    //判断当前登录用户对Item是否有权限
+    hasAuth = (cur) => {
+        const {key,isPublic} = cur;
+        const menus = memoryUtils.user.role.menus;
+        const username = memoryUtils.user.username;
+        if(username === 'admin' || isPublic || menus.indexOf(key)!==-1){
+            return true
+        //如果当前元素的某个子元素的key与menus中的key匹配
+        }else if(cur.children) {
+            return !! cur.children.find(child => menus.indexOf(child.key)!==-1)
+        }else{
+            return false
+        }
+    }
     getMenuNodesReduce = (menuList) => {
         const path =  this.props.location.pathname;
         const { SubMenu } = Menu;
@@ -43,24 +57,26 @@ class LeftNav extends Component {
         return (
             menuList.reduce((acc,cur)=>{
                 //console.log('acc',acc)
-                if(!cur.children){
-                    acc.push((
-                        <Menu.Item key={cur.key} icon={<PieChartOutlined />}>
-                            <Link to={cur.key}>{cur.title}</Link>
-                        </Menu.Item>
-                    ))
-                }else{
-                    const curChild = cur.children.find(element=>path.indexOf(element.key)===0)
-                    if (curChild){
-                        this.openkey=cur.key
+                if(this.hasAuth(cur)){
+                    if(!cur.children){
+                        acc.push((
+                            <Menu.Item key={cur.key} icon={<PieChartOutlined />}>
+                                <Link to={cur.key}>{cur.title}</Link>
+                            </Menu.Item>
+                        ))
+                    }else{
+                        const curChild = cur.children.find(element=>path.indexOf(element.key)===0)
+                        if (curChild){
+                            this.openkey=cur.key
+                        }
+                        acc.push((
+                            <SubMenu key={cur.key} icon={<MailOutlined />} title={cur.title}>
+                                {
+                                    this.getMenuNodesReduce(cur.children)
+                                }
+                            </SubMenu>
+                        ))
                     }
-                    acc.push((
-                        <SubMenu key={cur.key} icon={<MailOutlined />} title={cur.title}>
-                            {
-                                this.getMenuNodesReduce(cur.children)
-                            }
-                        </SubMenu>
-                    ))
                 }
                 return acc
             },[])
